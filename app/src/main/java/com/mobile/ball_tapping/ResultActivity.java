@@ -48,15 +48,15 @@ public class ResultActivity extends AppCompatActivity {
         });
 
         boolean isInTop25 = false;
-        if (players.size() < 25 || score > players.get(24).getScore()) {
+        if (players.size() < 25 || score >= players.get(Math.min(players.size(), 25) - 1).getScore()) {
             isInTop25 = true;
         }
+
 
         if (isInTop25) {
             showTop25Dialog();
         } else{
-//            showNotTop25Dialog();
-//            removeScore();
+            showNotTop25Dialog();
             nameEditText.setVisibility(View.GONE);
             submitButton.setVisibility(View.GONE);
         }
@@ -116,6 +116,7 @@ public class ResultActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.setCancelable(false);
         builder.show();
+        removeScore();
     }
 
     private void showNotTop25Dialog() {
@@ -153,6 +154,14 @@ public class ResultActivity extends AppCompatActivity {
         editor.remove(SCORE_KEY);
         editor.apply();
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }
 
 
